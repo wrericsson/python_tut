@@ -12,8 +12,8 @@ import numpy as np
 from pylab import *
 
 
-row = 2
-col = 2
+row = 9
+col = 16
 src = "./1.jpeg"
 def splitimage(src, rownum, colnum, dstpath):
     img = Image.open(src)
@@ -37,8 +37,9 @@ def splitimage(src, rownum, colnum, dstpath):
             for c in range(colnum):
                 box = (c * colwidth, r * rowheight, (c + 1) * colwidth, (r + 1) * rowheight)
                 #img.crop(box).save(os.path.join(os.path.abspath(os.path.dirname(__file__)), basename + '_' + str(num) + '.' + ext), ext)
-                im = array(array(img.crop(box)).flatten(),'f')
-                imlist.append(im)
+                if(num == 0 or (num == (col - 1 ) ) or  (num == row * col -1)) or (num == col * (row-1) -1 ):
+                    im = array(array(img.crop(box)).flatten(),'f')
+                    imlist.append(im)
                 num = num + 1
 
         print('图片切割完毕，共生成 %s 张小图片。' % num)
@@ -59,7 +60,8 @@ if __name__=='__main__':
          #           m,n = im.shape[0:2] # 获取图像的大小
           #          imnbr = len(imagearray) # 获取图像的数目
            #         print m,n,imnbr
-                print imagearray[0]
+                #print imagearray[0]
+                print len(imagearray)
                 X = np.vstack((imagearray[0],imagearray[1]))  
                 
                 print np.cov(X)
