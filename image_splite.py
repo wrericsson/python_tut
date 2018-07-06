@@ -9,12 +9,13 @@ Created on Wed Jun 20 17:37:38 2018
 import os
 from PIL import Image
 import numpy as np
-from pylab import *
+#from pylab import *
 
 
 row = 9
 col = 16
-src = "./1.jpeg"
+src = "2.jpeg"
+dest = "6.jpeg"
 def splitimage(src, rownum, colnum, dstpath):
     img = Image.open(src)
     w, h = img.size
@@ -36,8 +37,9 @@ def splitimage(src, rownum, colnum, dstpath):
         for r in range(rownum):
             for c in range(colnum):
                 box = (c * colwidth, r * rowheight, (c + 1) * colwidth, (r + 1) * rowheight)
-                #img.crop(box).save(os.path.join(os.path.abspath(os.path.dirname(__file__)), basename + '_' + str(num) + '.' + ext), ext)
-                if(num == 0 or (num == (col - 1 ) ) or  (num == row * col -1)) or (num == col * (row-1) -1 ):
+                #
+                if(num == 0 or (num == (col - 1 ) ) or  (num == row * col -1)) or (num == (row-1) * (col)):
+                 #   img.crop(box).save(os.path.join(os.path.abspath(os.path.dirname(__file__)), basename + '_' + str(num) + '.' + ext), ext)
                     im = array(array(img.crop(box)).flatten(),'f')
                     imlist.append(im)
                 num = num + 1
@@ -50,21 +52,23 @@ def splitimage(src, rownum, colnum, dstpath):
 if __name__=='__main__':
     
     if os.path.isfile(src):
-        dstpath = "1.jpeg"
-        if (dstpath == '') or os.path.exists(dstpath):
+       
+        if (src == '') or os.path.exists(src):
            
             if row > 0 and col > 0:
-                imagearray = splitimage(src, row, col, dstpath)
+                imagearray = splitimage(src, row, col, src)
+                imagearray_comp = splitimage(dest, row, col, dest)
                 for i in range(len(imagearray)):
-                    im = imagearray[i] # 打开一幅图像，获取其大小
+              #      im = imagearray[i] # 打开一幅图像，获取其大小#
          #           m,n = im.shape[0:2] # 获取图像的大小
           #          imnbr = len(imagearray) # 获取图像的数目
            #         print m,n,imnbr
                 #print imagearray[0]
-                print len(imagearray)
-                X = np.vstack((imagearray[0],imagearray[1]))  
-                
-                print np.cov(X)
+                   # print len(imagearray)
+                 
+                    X = np.vstack((imagearray_comp[i],imagearray[i]))  
+                    print np.linalg.norm(imagearray_comp[i] - imagearray[i]) 
+                    #print np.cov(X)
                 #print np.cov(imagearray[0],imagearray[0])
             else:
                 print('无效的行列切割参数！')
